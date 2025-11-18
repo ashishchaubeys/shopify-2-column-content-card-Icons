@@ -1,5 +1,5 @@
 # shopify-2-column-content-card-Icons
-![demo](demo.gif)
+![demo](demo/demo.gif)
 
 
 
