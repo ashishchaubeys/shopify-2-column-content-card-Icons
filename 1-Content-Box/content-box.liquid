@@ -1,0 +1,303 @@
+
+
+
+{% schema %}
+  {
+    "name": "Device Notification",
+    "tag": "section",
+    "class": "siteWidth iconContentCards",
+    "settings": [
+      {
+        "type": "header",
+        "content": "iCon & Content Cards"
+      },
+      {
+        "type": "paragraph",
+        "content": "This section is designed for Here Add blocks of iCon with Content Cards."
+      },
+      {
+        "type": "header",
+        "content": "Section Spacing"
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "label": "Margin Top (px)",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "label": "Margin Bottom (px)",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "default": 50
+      },
+      {
+        "type": "header",
+        "content": "Advanced"
+      },
+      {
+        "type": "text",
+        "id": "custom_class",
+        "label": "Extra CSS Classes",
+        "info": "Add space-separated classes (e.g., 'no-padding bg-gray')"
+      },
+      {
+        "type": "header",
+        "content": "Section Devider Line"
+      },
+      {
+        "type": "checkbox",
+        "id": "devider",
+        "label": "Devider Line",
+        "info": "Enable/Disable Devider Line by checkbox"
+      },
+      { "type": "header", "content": "Card BG Color" },
+      { "type": "select", "id": "card_background", "label": "Card BG Color", "options": [ { "value": "none", "label": "None" }, { "value": "background", "label": "Apply Card-BG" } ] },
+      { "type": "header", "content": "iCons Side" },
+      { "type": "select", "id": "iconstatus", "label": "Select Icon Side", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ],"default": "left" }
+    ],
+    "blocks": [
+      {
+        "type": "title",
+        "name": "Add Title",
+        "settings": [
+          { "type": "text", "id": "pageTitle", "label": "Title", "default": "Enter title" }
+        ]
+      },
+      {
+        "type": "iconAndContent",
+        "name": "Add Cards",
+        "settings": [
+          { "type": "header", "content": "icon & Content" },
+          { "type": "image_picker", "id": "card_icons", "label": "Image", "info": "Add icon as svg or png" },
+          { "type": "text", "id": "iconTitle", "label": "Title" },
+          { "type": "richtext", "id": "iconText", "label": "Paragraph", "info": "Add text here" }
+        ]
+      },
+      {
+        "type": "list",
+        "name": "Add List",
+        "settings": [
+          { "type": "header", "content": "List [Bullets & Numbers]" },
+          { "type": "richtext", "id": "pageList", "label": "Create List", "info": "Add only listing like bullets, numbers" }
+        ]
+      }
+    ],
+    "presets": [
+      { "name": "iCon & Content Cards-1", "category": "section" }
+    ]
+  }
+{% endschema %}
+
+<style>
+
+  #shopify-section-{{ section.id }} .block-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #1F1F1F;
+    text-align: center;
+  }
+  #shopify-section-{{ section.id }} .maincardbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 24px;
+    column-gap: 150px;
+    margin: 32px 0;
+  }
+
+  /* Desktop: Left column = odd, Right = even */
+  #shopify-section-{{ section.id }} .maincardbox > .icon-card:nth-child(odd) {
+    grid-column: 1;
+  }
+  #shopify-section-{{ section.id }} .maincardbox > .icon-card:nth-child(even) {
+    grid-column: 2;
+  }
+
+  #shopify-section-{{ section.id }} .icon-card {
+    display: flex;
+    {% comment %} flex-direction: row; {% endcomment %}
+    min-height: 180px;
+    align-items: flex-start;
+    justify-self: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+    height: 100%;
+  }
+
+  /* Apply background & shadow only when "background" is selected */
+  {% if section.settings.card_background == 'background' %}
+    #shopify-section-{{ section.id }} .icon-card {
+      background: #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    #shopify-section-{{ section.id }} .icon-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+  {% endif %}
+  /* Always apply icon positioning */
+  /* Icon alignment — separate condition */
+  {% if section.settings.iconstatus == 'left' %}
+    #shopify-section-{{ section.id }} .icon-card {
+      flex-direction: row;
+    }
+  {% elsif section.settings.iconstatus == 'right' %}
+    #shopify-section-{{ section.id }} .icon-card {
+      flex-direction: row-reverse;
+    }
+  {% endif %}
+
+  #shopify-section-{{ section.id }} .icon-card .imgBox {
+    min-width: 60px;
+    max-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+  #shopify-section-{{ section.id }} .icon-card h3 {
+    margin: 0 0 12px;
+    font-family: Karla;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .icon-card p {
+    margin: 0;
+    color: #1F1F1F;
+    font-family: Karla;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .line-horizontal {
+    width: 100%;
+    border: 1px solid #B7B7B7;
+    margin: 8em 0;
+  }
+
+  /* Mobile: Stack left column first, then right */
+
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} .block-title {
+      font-size: 34px;
+    }
+    #shopify-section-{{ section.id }} .maincardbox {
+      column-gap: 40px;
+      row-gap: 20px;
+    }
+     #shopify-section-{{ section.id }} .icon-card h3 {
+     font-size: 20px;
+    }
+    #shopify-section-{{ section.id }} .icon-card p {
+     font-size: 18px;
+    }
+   #shopify-section-{{ section.id }} .icon-card {
+      margin-bottom: 0;
+    }
+   
+  }
+  @media (max-width: 768px) {
+    #shopify-section-{{ section.id }} .block-title {
+    font-size: 28px;
+   }
+    #shopify-section-{{ section.id }} .maincardbox {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    #shopify-section-{{ section.id }} .icon-card h3 {
+     font-size: 18px;
+   }
+    #shopify-section-{{ section.id }} .icon-card p {
+     font-size: 16px;
+   }
+   #shopify-section-{{ section.id }} .icon-card .imgBox {
+      min-width: 34px;
+      max-width: 34px;
+   }
+
+    /* Reset grid column */
+    #shopify-section-{{ section.id }} .maincardbox > .icon-card {
+      grid-column: 1 !important;
+    }
+
+    /* Reorder: All odd (left) first, then even (right) */
+    #shopify-section-{{ section.id }} .maincardbox > .icon-card:nth-child(odd) {
+      order: 1;
+    }
+    #shopify-section-{{ section.id }} .maincardbox > .icon-card:nth-child(even) {
+      order: 2;
+    }
+  }
+</style>
+
+<div class="icon-content-section {{ section.settings.custom_class }}"
+     style="margin-top: {{ section.settings.margin_top }}px; margin-bottom: {{ section.settings.margin_bottom }}px;">
+
+  {% comment %} ---------- 1. Open the card wrapper only when we meet the first icon card ---------- {% endcomment %}
+  {% assign card_wrapper_open = false %}
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+
+      {% when 'title' %}
+        {% if card_wrapper_open %}
+          {% assign card_wrapper_open = false %}
+          </div>{% comment %}close .maincardbox if it was open{% endcomment %}
+        {% endif %}
+        <h2 class="block-title" {{ block.shopify_attributes }}>
+          {{ block.settings.pageTitle }}
+        </h2>
+
+      {% when 'iconAndContent' %}
+        {% unless card_wrapper_open %}
+          {% assign card_wrapper_open = true %}
+          <div class="maincardbox">
+        {% endunless %}
+        <div class="icon-card" {{ block.shopify_attributes }}>
+          {% if block.settings.card_icons %}
+            <div class="imgBox">
+              <img src="{{ block.settings.card_icons | image_url }}" loading="lazy" alt="{{ block.settings.iconTitle | escape }}">
+            </div>
+          {% endif %}
+          <div class="cardcontent">
+            {% if block.settings.iconTitle %}<h3>{{ block.settings.iconTitle }}</h3>{% endif %}
+            {% if block.settings.iconText %}<div>{{ block.settings.iconText }}</div>{% endif %}
+          </div>
+        </div>
+
+      {% when 'list' %}
+        {% if card_wrapper_open %}
+          {% assign card_wrapper_open = false %}
+          </div>{% comment %}close .maincardbox{% endcomment %}
+        {% endif %}
+        <div class="content-list" {{ block.shopify_attributes }}>
+          {{ block.settings.pageList }}
+        </div>
+
+    {% endcase %}
+  {% endfor %}
+
+  {% comment %} ---------- 2. Close wrapper if it stayed open at the end ---------- {% endcomment %}
+  {% if card_wrapper_open %}</div>{% endif %}
+
+  {% comment %} ---------- Divider (still optional) ---------- {% endcomment %}
+  {% if section.settings.devider %}
+    <div class="line-horizontal"></div>
+  {% endif %}
+
+</div>
+
